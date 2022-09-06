@@ -195,16 +195,18 @@ void DzUnrealAction::writeConfiguration()
 
 	 if (m_sAssetType.toLower().contains("mesh") || m_sAssetType == "Animation")
 	 {
-		 QTextStream *pCVSStream = nullptr;
-		 if (m_bExportMaterialPropertiesCSV)
+		if (m_bExportMaterialPropertiesCSV)
 		 {
-			 QString filename = m_sDestinationPath + m_sExportFilename + "_Maps.csv";
-			 QFile file(filename);
-			 file.open(QIODevice::WriteOnly);
-			 pCVSStream = new QTextStream(&file);
-			 *pCVSStream << "Version, Object, Material, Type, Color, Opacity, File" << endl;
+			QString filename = m_sDestinationPath + m_sExportFilename + "_Maps.csv";
+			QFile file(filename);
+			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			QTextStream pCVSStream(&file);
+			pCVSStream << "Version, Object, Material, Type, Color, Opacity, File" << endl;
+			writeAllMaterials(m_pSelectedNode, writer, &pCVSStream);
 		 }
-		 writeAllMaterials(m_pSelectedNode, writer, pCVSStream);
+		 else {
+		  	writeAllMaterials(m_pSelectedNode, writer, nullptr);
+		 }	
 		 writeAllMorphs(writer);
 
 		 // DB, 2022-July-5: Daz To Unified Bridge Format support
