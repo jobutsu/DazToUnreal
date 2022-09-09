@@ -465,12 +465,23 @@ UMaterialInstanceConstant* FDazToUnrealMaterials::CreateMaterial(const FString C
 					FStaticParameterSet StaticParameters;
 					UnrealMaterialConstant->GetStaticParameterValues(StaticParameters);
 
+					#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION > 0
+					for (int32 ParameterIdx = 0; ParameterIdx < StaticParameters.EditorOnly.StaticSwitchParameters.Num(); ParameterIdx++)
+					#else
 					for (int32 ParameterIdx = 0; ParameterIdx < StaticParameters.StaticSwitchParameters.Num(); ParameterIdx++)
+					#endif
 					{
+					#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION > 0
+						for (int32 SwitchParamIdx = 0; SwitchParamIdx < StaticParameters.EditorOnly.StaticSwitchParameters.Num(); SwitchParamIdx++)
+					#else
 						for (int32 SwitchParamIdx = 0; SwitchParamIdx < StaticParameters.StaticSwitchParameters.Num(); SwitchParamIdx++)
+					#endif
 						{
+					#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION > 0
+							FStaticSwitchParameter& StaticSwitchParam = StaticParameters.EditorOnly.StaticSwitchParameters[SwitchParamIdx];
+					#else
 							FStaticSwitchParameter& StaticSwitchParam = StaticParameters.StaticSwitchParameters[SwitchParamIdx];
-
+					#endif
 							if (StaticSwitchParam.ParameterInfo.Name.ToString() == MaterialProperty.Name)
 							{
 								StaticSwitchParam.bOverride = true;
