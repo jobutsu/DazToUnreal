@@ -39,11 +39,7 @@ struct DAZTOUNREALRUNTIME_API FAnimNode_DazMorphDriver : public FAnimNode_Skelet
 
 	/** Curve used to map from the source attribute to the driven attributes if present (otherwise the Multiplier will be used) */
 	UPROPERTY(EditAnywhere, Category=Mapping)
-	#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION > 0
 	TObjectPtr<class UCurveFloat> DrivingCurve;
-	#else
-	UCurveFloat* DrivingCurve;
-	#endif
 
 	// Multiplier to apply to the input value (Note: Ignored when a curve is used)
 	UPROPERTY(EditAnywhere, Category=Mapping)
